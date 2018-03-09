@@ -1,4 +1,5 @@
-import dis, marshal, sys, ctypes
+import dis, marshal, sys, ctypes, traceback
+from pprint import pprint
 
 # Header size changed in 3.3. It might change again, but as of this writing, it
 # hasn't.
@@ -17,7 +18,7 @@ def get_object_by_id(address):
 
 
 def print_code_names(code):
-    from pprint import pprint
+
     pprint({
         'co_consts': code.co_consts,
         'co_names': code.co_names,
@@ -25,3 +26,31 @@ def print_code_names(code):
         'co_freevars': code.co_freevars,
         'co_cellvars': code.co_cellvars
     })
+    
+    
+def print_frame(frame):
+    if not frame:
+        return
+
+    pprint([
+        {
+            'back': frame.f_back,
+        },
+        {
+            'code': frame.f_code,
+        },
+        {
+            'exc_type': frame.f_exc_type,
+            'exc_value': frame.f_exc_value,
+            'exc_traceback': frame.f_exc_traceback,
+        },
+        {
+            'globals': id(frame.f_globals),
+            'locals': id(frame.f_locals),
+            'builtins': id(frame.f_builtins),
+        },
+        {
+            'stack': traceback.extract_stack(frame),
+        },
+
+    ])
