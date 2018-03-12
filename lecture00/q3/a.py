@@ -1,3 +1,3 @@
 print(__name__)
-import a
+import a as spam
 import b
